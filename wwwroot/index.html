@@ -21,20 +21,16 @@
 </div>
 <script>
 
-    var database;
-
-    async function getDataFromDb() {
-        await fetch("/api/dbinfo",
+    let response = fetch("/api/dbinfo",
             {
                 method: "GET",
                 headers: { "Accept": "application/json" }
-            })
-         .then(response => response.json())
-         .then(response => {
-             database = response;
-         });
-    }
+            }).then(response => response.json());
+        console.log(response);
 
+    
+
+    
     async function GetOutput() {
         const response = await fetch(`/api/output?command=${document.getElementById("inputField").value}`, {
             method: "GET"
