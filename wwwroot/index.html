@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Web Shell</title>
+    <link rel="stylesheet" href="css/StyleSheet.css">
+</head>
+<body>
+<div class="inputText">
+    <p>Write your command</p>
+    
+
+        <input id="inputField" autocomplete="off" class="inputCommand" type="text" name="command" />
+        <button class="baton" id="consoleTextButton"> Submit</button>
+    
+</div>
+<div id="outputText" class="outputText">
+
+    
+
+</div>
+<script>
+
+    var database;
+
+    async function getDataFromDb() {
+        await fetch("/api/dbinfo",
+            {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            })
+         .then(response => response.json())
+         .then(response => {
+             database = response;
+         });
+    }
+
+    async function GetOutput() {
+        const response = await fetch(`/api/output?command=${document.getElementById("inputField").value}`, {
+            method: "GET"
+        });
+        if (response.ok === true) {
+            let outputDiv = document.getElementById("outputText");
+            console.log(document.getElementById("inputField").value);
+            const Command = await response.text();
+            outputDiv.innerHTML += Command;
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+
+        }
+    }
+    document.getElementById("consoleTextButton").addEventListener('click', () => GetOutput());
+
+    async function GetCommandFromDB() {
+        const commandFromDB = await fetch()
+    }
+    
+    window.addEventListener('keydown',
+        function(event) {
+            switch (event.key) {
+            case 'Down':
+            case 'ArrowDown':
+                     alert('down pressed!');
+                     break;
+            case 'Up':
+            case 'ArrowUp':
+
+                alert('up pressed!');
+                break;
+            }
+                
+        });
+
+
+</script>
+</body>
+</html>
