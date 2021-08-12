@@ -10,7 +10,7 @@ namespace WebShell.Controllers.api
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DbInfoController : Controller
+    public class DbInfoController : Controller // 
     {
         private CommandContext _dbContext;
 

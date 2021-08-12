@@ -20,12 +20,16 @@
         let inputField = document.getElementById('inputField');
         let button = document.getElementById('consoleTextButton');
 
-        button.addEventListener('click', () => GetOutput());
+        button.addEventListener('click', () => GetOutput()); //вывод ответа при нажатии на кнопку submit
 
+        //event, отвечающий за вывод команд при нажатии на кнопки вверх вниз
+        // async лямбда функция существует для возможности оперирования данными, которые возвращает promise
+        
         inputField.addEventListener('focus',
             async () => {
                 var data = await GetDbData();
                 var currentElem = data.length;
+               //event, отвечающий за нажатие клавиш
                 inputField.addEventListener('keydown',
                     async function(event) {
 
@@ -61,7 +65,7 @@
                     });
             });
 
-
+        //функция отправления гет запроса к бд и приведения ответа к json
         async function GetDbData() {
             const response = await fetch("/api/dbinfo",
                 {
@@ -72,8 +76,8 @@
 
             return response;
         }
-
-        async function GetOutput() {
+        //функция для вывода ответа
+        async function GetOutput() { 
             const response = await fetch(`/api/output?command=${inputField.value}`, {
                 method: "GET"
             });

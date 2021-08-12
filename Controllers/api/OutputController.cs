@@ -9,9 +9,9 @@ using WebShell.Models;
 
 namespace WebShell.Controllers
 {
-    [ApiController]
+    [ApiController] 
     [Route("api/[controller]")]
-    public class OutputController : ControllerBase
+    public class OutputController : ControllerBase 
     {
         private readonly CommandContext _dbContext;
 
@@ -19,13 +19,17 @@ namespace WebShell.Controllers
         {
             _dbContext = context;
         }
-        
+
         [HttpGet]
         public string Index(string command)
         {
-            if(command != null)
+            if (command != null) //добавление команды в бд
+            {
                 _dbContext.Add(new Command() {Text = command});
-            _dbContext.SaveChanges();
+
+                _dbContext.SaveChanges();
+            }
+
             Process cmd = new Process
             {
                 StartInfo = new ProcessStartInfo()
@@ -42,9 +46,9 @@ namespace WebShell.Controllers
             cmd.StandardInput.WriteLine(command);
             cmd.StandardInput.Close();
             cmd.WaitForExit();
-            var output = cmd.StandardOutput.ReadToEnd();
+            var output = cmd.StandardOutput.ReadToEnd();//сохранение ответа на команду в переменную 
 
-            output = output.Replace("<", "&lt;").Replace(">", "&gt;").Replace("\n", "</br>");
+            output = output.Replace("<", "&lt;").Replace(">", "&gt;").Replace("\n", "</br>"); //форматирование текста для вывода в html
 
             return output;
         }
