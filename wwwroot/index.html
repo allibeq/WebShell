@@ -8,85 +8,89 @@
 <body>
 <div class="inputText">
     <p>Write your command</p>
-    
-
-        <input id="inputField" autocomplete="off" class="inputCommand" type="text" name="command" />
-        <button class="baton" id="consoleTextButton"> Submit</button>
-    
+    <input id="inputField" autocomplete="off" class="inputCommand" type="text" name="command" />
+    <button id="consoleTextButton"> Submit</button>
 </div>
 <div id="outputText" class="outputText">
 
     
 
 </div>
-<script>
+    <script>
+        let inputField = document.getElementById('inputField');
+        let button = document.getElementById('consoleTextButton');
 
+        button.addEventListener('click', () => GetOutput());
 
-    let dbFetched = fetch("/api/dbinfo",
-        {
-            method: "GET",
-            headers: { "Accept": "application/json" }
-        }).then(response => 
-        response.json());
-    
-    console.log(dbFetched.resolve(value));
+        inputField.addEventListener('focus',
+            async () => {
+                var data = await GetDbData();
+                var currentElem = data.length;
+                inputField.addEventListener('keydown',
+                    async function(event) {
 
-   // console.log(dbFetched['value'][3]['text']);
+                        switch (event.key) {
+                        case 'Down':
+                            case 'ArrowDown':
+                                if (currentElem === data.length) {
+                                    break;
+                                }
 
-   async function getDbData(x) {
-       const response = await fetch("/api/dbinfo",
-           {
-               method: "GET",
-               headers: { "Accept": "application/json" }
-           }).then(response => response.json());
+                                if (currentElem !== data.length-1) {
+                                    currentElem++;
+                                }
+                                
+                                inputField.value = data[currentElem].text;
+                                console.log(data[currentElem].text);
+                            break;
+                        case 'Up':
+                            case 'ArrowUp':
+                                if (currentElem !== 0) {
+                                    currentElem--;
+                                }
+                                inputField.value = data[currentElem].text;
+                                console.log(data[currentElem].text);
+                            break;
+                        case 'Enter':
+                                GetOutput();
+                                data = await GetDbData();
+                                currentElem = data.length;
+                            break;
+                        }
+                    });
+            });
 
-       console.log(response);
+        const response = fetch("/api/dbinfo",
+            {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            }).then(response => response.json());
 
-       let id = response
-      console.log(response[2]['id'] - x);
-      console.log(response[2]['id']);
+        console.log(response.PromiseResult);
 
-   }
+        async function GetDbData() {
+            const response = await fetch("/api/dbinfo",
+                {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                })
+                .then(response => response.json());
 
-   
-   /* const dbFetched = getDbData();
-
-    console.log(dbFetched);*/
-
-
-    async function GetOutput() {
-        const response = await fetch(`/api/output?command=${document.getElementById("inputField").value}`, {
-            method: "GET"
-        });
-        if (response.ok === true) {
-            let outputDiv = document.getElementById("outputText");
-            console.log(document.getElementById("inputField").value);
-            const Command = await response.text();
-            outputDiv.innerHTML += Command;
-            outputDiv.scrollTop = outputDiv.scrollHeight;
-
+            return response;
         }
-    }
-    document.getElementById("consoleTextButton").addEventListener('click', () => GetOutput());
 
-   
-    window.addEventListener('keydown',
-        function(event) {
-            switch (event.key) {
-            case 'Down':
-                case 'ArrowDown':
-                  //  getDbData(1);
-                     alert('down pressed!');
-                     break;
-            case 'Up':
-            case 'ArrowUp':
-               // getDbData(-1);
-                alert('up pressed!');
-                break;
+        async function GetOutput() {
+            const response = await fetch(`/api/output?command=${inputField.value}`, {
+                method: "GET"
+            });
+            inputField.value = null;
+            if (response.ok === true) {
+                let outputDiv = document.getElementById("outputText");
+                const command = await response.text();
+                outputDiv.innerHTML += command;
+                outputDiv.scrollTop = outputDiv.scrollHeight;
             }
-        });
-
-
-</script>
+        }
+    </script>
 </body>
 </html>
