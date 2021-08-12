@@ -21,16 +21,39 @@
 </div>
 <script>
 
-    let response = fetch("/api/dbinfo",
-            {
-                method: "GET",
-                headers: { "Accept": "application/json" }
-            }).then(response => response.json());
-        console.log(response);
 
+    let dbFetched = fetch("/api/dbinfo",
+        {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        }).then(response => 
+        response.json());
     
+    console.log(dbFetched.resolve(value));
 
-    
+   // console.log(dbFetched['value'][3]['text']);
+
+   async function getDbData(x) {
+       const response = await fetch("/api/dbinfo",
+           {
+               method: "GET",
+               headers: { "Accept": "application/json" }
+           }).then(response => response.json());
+
+       console.log(response);
+
+       let id = response
+      console.log(response[2]['id'] - x);
+      console.log(response[2]['id']);
+
+   }
+
+   
+   /* const dbFetched = getDbData();
+
+    console.log(dbFetched);*/
+
+
     async function GetOutput() {
         const response = await fetch(`/api/output?command=${document.getElementById("inputField").value}`, {
             method: "GET"
@@ -46,24 +69,21 @@
     }
     document.getElementById("consoleTextButton").addEventListener('click', () => GetOutput());
 
-    async function GetCommandFromDB() {
-        const commandFromDB = await fetch()
-    }
-    
+   
     window.addEventListener('keydown',
         function(event) {
             switch (event.key) {
             case 'Down':
-            case 'ArrowDown':
+                case 'ArrowDown':
+                  //  getDbData(1);
                      alert('down pressed!');
                      break;
             case 'Up':
             case 'ArrowUp':
-
+               // getDbData(-1);
                 alert('up pressed!');
                 break;
             }
-                
         });
 
 
