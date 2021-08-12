@@ -61,6 +61,7 @@ form {
     color: rgb(102, 255, 102);
 }
 p {
-    font-size: 18px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    font-size: 28px;
     color: rgb(102, 255, 102);
 }
