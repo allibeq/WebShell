@@ -10,7 +10,7 @@ namespace WebShell.Models
     {
         public CommandContext(DbContextOptions<CommandContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
         public DbSet<Command> Commands { get; set; }

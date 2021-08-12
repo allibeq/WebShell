@@ -43,23 +43,21 @@
                                 if (currentElem !== data.length-1) {
                                     currentElem++;
                                 }
-                                
+                                data = await GetDbData();
                                 inputField.value = data[currentElem].text;
-                                console.log(data[currentElem].text);
                             break;
                         case 'Up':
                             case 'ArrowUp':
                                 if (currentElem !== 0) {
                                     currentElem--;
                                 }
+                                data = await GetDbData();
                                 inputField.value = data[currentElem].text;
-                                console.log(data[currentElem].text);
                             break;
                             case 'Enter':
-                                console.log("enter");
                                 GetOutput();
+                                currentElem = data.length - 1;
                                 data = await GetDbData();
-                                currentElem = data.length;
                             break;
                         }
                     });
