@@ -51,7 +51,8 @@
                                 inputField.value = data[currentElem].text;
                                 console.log(data[currentElem].text);
                             break;
-                        case 'Enter':
+                            case 'Enter':
+                                console.log("enter");
                                 GetOutput();
                                 data = await GetDbData();
                                 currentElem = data.length;
@@ -60,13 +61,6 @@
                     });
             });
 
-        const response = fetch("/api/dbinfo",
-            {
-                method: "GET",
-                headers: { "Accept": "application/json" }
-            }).then(response => response.json());
-
-        console.log(response.PromiseResult);
 
         async function GetDbData() {
             const response = await fetch("/api/dbinfo",
